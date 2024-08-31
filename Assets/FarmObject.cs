@@ -1,28 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //ファームまでの時間、ファーム終了時に得るアイテム、ファーム可能回数
 public class FarmObject : MonoBehaviour
 {
     [SerializeField] public float FarmSpeed;
-    [SerializeField] public int ItemCount;
+    [SerializeField] int _itemCount;
     [SerializeField] public ItemList _item;
-    // Start is called before the first frame update
-    void Start()
+    public int ItemCount
     {
-        
-    }
+        get { return _itemCount; }
+        set
+        {
+            Debug.Log("_itemCountが操作されました。");
+            _itemCount = value;
+            if (_itemCount <= 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
 public enum ItemList
 {
     Wood,
     Stone,
-    Money,
+    Money
 }
