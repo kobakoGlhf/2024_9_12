@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class CharacterControlle : MonoBehaviour
+public class CharacterControlle : MonoBehaviour,ITarget
 {
+    Action _interact;
     [SerializeField] GameObject _child;
     [SerializeField] float _interactSpees;
     [SerializeField] float _speed;
@@ -19,6 +21,10 @@ public class CharacterControlle : MonoBehaviour
     [SerializeField] bool test;
     [SerializeField] GameObject _testHome;
     float _timer = 0f;
+    public Action Interact {
+        get { return _interact; }
+        set { _interact = value;} 
+    }
     public GameObject SetInteractObj
     {
         get { return _interactObj; }
@@ -59,12 +65,11 @@ public class CharacterControlle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _home = _testHome;
         if (test)
         {
             GoalPos = _testTransform.position;
+            _home = _testHome;
         }
-        else GoalPos =SearchMethod.SearchGoalPos(gameObject);
     }
     private void FixedUpdate()
     {
@@ -76,8 +81,8 @@ public class CharacterControlle : MonoBehaviour
             }
             else
             {
-                _child.SetActive(true);
-                if (_home != null&&_farmObject==null)
+                //_child.SetActive(true);
+                if (_home != null)
                 {
                     GoalPos = _home.transform.position;
                 }
@@ -105,7 +110,15 @@ public class CharacterControlle : MonoBehaviour
             _timer = 0f;
         }
     }
+    void Stand()
+    {
+
+    }
     void SetHomePos(GameObject home)
+    {
+        _home = home;
+    }
+    public void SetHome(GameObject home)
     {
         _home = home;
     }
