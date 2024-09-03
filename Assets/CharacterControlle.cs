@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-public class CharacterControlle : MonoBehaviour,ITarget
+public class CharacterControlle : MonoBehaviour
 {
     Action _interact;
     [SerializeField] GameObject _child;
     [SerializeField] float _interactSpees;
     [SerializeField] float _speed;
     [SerializeField] int _maxBackPackListCount;
-    GameObject _home;
     Vector2 _movePos;
+    GameObject _home;
     FarmObject _farmObject;
     GameObject _interactObj;
     //家から操作する部分
@@ -21,35 +20,28 @@ public class CharacterControlle : MonoBehaviour,ITarget
     [SerializeField] bool test;
     [SerializeField] GameObject _testHome;
     float _timer = 0f;
-    public Action Interact {
-        get { return _interact; }
-        set { _interact = value;} 
-    }
-    public GameObject SetInteractObj
+    public GameObject Home { get => _home; private set => _home = value; }
+    public Action Interact { get => _interact; set => _interact = value; }
+    public GameObject SetInteractObj { get => _interactObj; set => _interactObj = value; }
+    public Vector2 MovePos
     {
-        get { return _interactObj; }
-        set { _interactObj = value; }
-    }
-    public Vector2 GoalPos
-    {
-        get
-        {
-            return _movePos;
-        }
+        get => _movePos;
         set
         {
             if (_movePos != value)
             {
-                _child?.SetActive(false);
+                //_child?.SetActive(false);
             }
             _movePos = value;
             if (_movePos == (Vector2)_home.transform.position)
             {
+                Debug.Log("homeに移動中");
                 MoveState = CharacterMoveState.GoHorm;
             }
             else
             {
-                MoveState= CharacterMoveState.GoFarm;
+                Debug.Log("ファーム中");
+                MoveState = CharacterMoveState.GoFarm;
             }
         }
     }
@@ -62,20 +54,22 @@ public class CharacterControlle : MonoBehaviour,ITarget
             _farmObject = value;
         }
     }
+
+
     // Start is called before the first frame update
     void Start()
     {
         if (test)
         {
-            GoalPos = _testTransform.position;
+            MovePos = _testTransform.position;
             _home = _testHome;
         }
     }
     private void FixedUpdate()
     {
-        if (Mathf.Abs(Vector2.Distance(transform.position, GoalPos)) < _interactSpees)
+        if (Mathf.Abs(Vector2.Distance(transform.position, MovePos)) < _interactSpees)
         {
-            if (_farmObject != null&& BackPack.Count <= _maxBackPackListCount)
+            if (_farmObject != null && BackPack.Count <= _maxBackPackListCount)
             {
                 Farm();
             }
@@ -84,7 +78,7 @@ public class CharacterControlle : MonoBehaviour,ITarget
                 //_child.SetActive(true);
                 if (_home != null)
                 {
-                    GoalPos = _home.transform.position;
+                    MovePos = _home.transform.position;
                 }
                 Debug.Log("操作終了");
             }
@@ -97,7 +91,7 @@ public class CharacterControlle : MonoBehaviour,ITarget
     private void Move()
     {
         //移動処理
-        var distance = (GoalPos - (Vector2)transform.position).normalized;
+        var distance = (MovePos - (Vector2)transform.position).normalized;
         transform.localPosition += (Vector3)distance * _speed * Time.deltaTime;
     }
     private void Farm()
@@ -110,17 +104,9 @@ public class CharacterControlle : MonoBehaviour,ITarget
             _timer = 0f;
         }
     }
-    void Stand()
+    public void SetHome(GameObject obj)
     {
-
-    }
-    void SetHomePos(GameObject home)
-    {
-        _home = home;
-    }
-    public void SetHome(GameObject home)
-    {
-        _home = home;
+        Home = obj;
     }
 }
 public enum CharacterMoveState
