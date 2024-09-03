@@ -7,20 +7,28 @@ public class CharacterTrigger : MonoBehaviour
 {
     [SerializeField] CharacterControlle _character;
     FarmObject _farmObject;
+    GameObject _closestObj;
+    Vector2 _closestObjPos;
     private void OnEnable()
     {
         _character=transform.GetComponentInParent<CharacterControlle>();
+        Debug.Log(_character);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("ƒqƒbƒg");
-        if(collision.TryGetComponent<FarmObject>(out _farmObject))
+        if (collision.TryGetComponent(out _farmObject))
         {
-            var newDistane= Vector2.Distance(collision.transform.position, transform.position);
-            var oldDistance =_character.SetFarmObject? Vector2.Distance(_character.SetFarmObject.transform.
-                position, transform.position):0;
-            if (newDistane>oldDistance)
+            var collisionPos = collision.transform.position;
+            var newDistane = Vector2.Distance(collisionPos, transform.position);
+            var oldDistance = Vector2.Distance(_closestObjPos, transform.position);
+            if (newDistane < oldDistance||_closestObj==null)
+            {
+                Debug.Log($"targetchange:newDistane");
+                _closestObjPos = collisionPos;
+                _closestObj = _farmObject.gameObject;
                 _character.SetFarmObject = _farmObject;
+            }
         }
     }
 }

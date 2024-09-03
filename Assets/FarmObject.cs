@@ -18,12 +18,5 @@ public class FarmObject : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-
     }
-}
-public enum ItemList
-{
-    Wood,
-    Stone,
-    Money
 }
