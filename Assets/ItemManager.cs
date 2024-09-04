@@ -10,7 +10,12 @@ public class ItemManager : MonoBehaviour
     private void Update()
     {
         Wood = CountItem.Wood; Stone = CountItem.Stone; Money = CountItem.Money;
+        if (Input.GetMouseButtonDown(0))
+        {
+
+        }
     }
+    
 }
 public static class CountItem
 {
