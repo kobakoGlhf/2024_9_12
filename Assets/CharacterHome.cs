@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CharacterHome : MonoBehaviour
+public class CharacterHome : MonoBehaviour,IClickForInfo
 {
     [SerializeField] int _maxCharacter;
     CharacterControlle _character;
@@ -24,14 +24,19 @@ public class CharacterHome : MonoBehaviour
             }
         }
     }
+    public Vector2 Pos { get => transform.position; }
+    public Sprite Sprite { get => gameObject.GetComponent<Sprite>(); }
+    public Vector2 TargetPos { get => Target.transform.position;}
+    public string Name { get => gameObject.name; }
     [SerializeField] GameObject _characterPrefab;
+    
     private void OnEnable()
     {
         Target=SearchGoalObj(this.gameObject);
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(Input.GetKeyDown(KeyCode.Q))
         {
             AddCharacter();
         }
@@ -84,13 +89,13 @@ public class CharacterHome : MonoBehaviour
                     switch (item)
                     {
                         case ItemList.Wood:
-                            CountItem.Wood++;
+                            ItemManager.Instance.Wood++;
                             break;
                         case ItemList.Stone:
-                            CountItem.Stone++;
+                            ItemManager.Instance.Stone++;
                             break;
                         case ItemList.Money:
-                            CountItem.Money++;
+                            ItemManager.Instance.Money++;
                             break;
                         default:
                             Debug.LogWarning("ñ¢ê›íËçÄñ⁄Ç™ë∂ç›ÇµÇ‹Ç∑");
