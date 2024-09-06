@@ -20,15 +20,7 @@ public class ItemManager:MonoBehaviour
     public int Wood
     {
         get=>_wood;
-        set
-        {
-            if(_wood!=value)
-            {
-                _wood = value;
-                Debug.Log(_woodText);
-                _woodText.text = value.ToString();
-            }
-        }
+        set=> ItemUiChange(ref _wood, value, _woodText);
     }
     public int Stone
     {
@@ -46,7 +38,7 @@ public class ItemManager:MonoBehaviour
         {
             setInt= value;
             Debug.Log($"text{changeText.name} int {setInt}");
-            changeText.text= value.ToString();
+            changeText.text= value.ToString("000");
         }
     }
 }

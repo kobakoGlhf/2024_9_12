@@ -2,15 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CharacterHome : MonoBehaviour,IClickForInfo
+public class CharacterHome : MonoBehaviour, IClickForInfo
 {
     [SerializeField] int _maxCharacter;
     CharacterControlle _character;
-    [SerializeField]List<CharacterControlle> _charactersList=new List<CharacterControlle>();
+    [SerializeField] List<CharacterControlle> _charactersList = new List<CharacterControlle>();
     [SerializeField] GameObject _targetObj;//Serializeはデバック用
+    [SerializeField] GameObject _characterPrefab;
     GameObject Target
     {
-        get=>_targetObj;
+        get => _targetObj;
         set
         {
             Debug.Log("target変更Home");
@@ -26,17 +27,24 @@ public class CharacterHome : MonoBehaviour,IClickForInfo
     }
     public Vector2 Pos { get => transform.position; }
     public Sprite Sprite { get => gameObject.GetComponent<Sprite>(); }
-    public Vector2 TargetPos { get => Target.transform.position;}
+    public Vector2 TargetPos { get => Target.transform.position; }
     public string Name { get => gameObject.name; }
-    [SerializeField] GameObject _characterPrefab;
-    
+    public List<string> GetListString
+    {
+        get
+        {
+            return _charactersList.ConvertAll(x => { Debug.Log("aaa"); return gameObject.name; });
+        }
+    }
+
+
     private void OnEnable()
     {
-        Target=SearchGoalObj(this.gameObject);
+        Target = SearchGoalObj(this.gameObject);
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             AddCharacter();
         }
@@ -45,7 +53,7 @@ public class CharacterHome : MonoBehaviour,IClickForInfo
     {
         if (_targetObj == null)
         {
-            _targetObj= SearchGoalObj(gameObject);
+            _targetObj = SearchGoalObj(gameObject);
         }
     }
     void AddCharacter()
@@ -57,7 +65,7 @@ public class CharacterHome : MonoBehaviour,IClickForInfo
             var characterControlle = obj.GetComponent<CharacterControlle>();
             _charactersList.Add(characterControlle);
             characterControlle.SetHome(gameObject);
-            characterControlle.MovePos= Target.transform.position;
+            characterControlle.MovePos = Target.transform.position;
         }
         else
         {
@@ -68,7 +76,7 @@ public class CharacterHome : MonoBehaviour,IClickForInfo
     {
         var targetObj = FindObjectsOfType<FarmObject>();
         Debug.Log(targetObj.Length);
-        if (targetObj.Length>0)
+        if (targetObj.Length > 0)
         {
             return targetObj.OrderBy(i => Vector2.Distance(i.transform.position, obj.transform.position))
                 .FirstOrDefault().gameObject;
@@ -107,4 +115,5 @@ public class CharacterHome : MonoBehaviour,IClickForInfo
             }
         }
     }
+
 }

@@ -12,7 +12,7 @@ public class ImputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             IClickForInfo info=CreatRay<IClickForInfo>();
-            if (info != null) _uIManager.SetClicObj = info;
+            _uIManager.SetClicObj = info;
         }
     }
 #nullable enable

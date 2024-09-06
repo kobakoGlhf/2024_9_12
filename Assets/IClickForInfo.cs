@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IClickForInfo
+public interface IClickForInfo : IAllInfo
 {
     Vector2 Pos { get;}
-    Sprite Sprite { get;}
     Vector2 TargetPos { get;}
+    List<string> GetListString {  get; }
+
+}
+public interface IAllInfo
+{
+    Sprite Sprite { get;}
     string Name { get;}
 }
 // clickしたものの情報をとってUIに表示させるためのインターフェイス
