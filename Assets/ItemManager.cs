@@ -38,7 +38,7 @@ public class ItemManager:MonoBehaviour
         {
             setInt= value;
             Debug.Log($"text{changeText.name} int {setInt}");
-            changeText.text= value.ToString("000");
+            changeText.text= value.ToString("0000");
         }
     }
 }
