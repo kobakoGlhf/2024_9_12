@@ -6,10 +6,11 @@ public class ImputManager : MonoBehaviour
 {
     GameObject _clickObj;
     [SerializeField] InfoUIManager _uIManager;
+    bool isClickabule=true;
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&isClickabule)
         {
             IClickForInfo info=CreatRay<IClickForInfo>();
             _uIManager.SetClicObj = info;

@@ -29,11 +29,13 @@ public class CharacterHome : MonoBehaviour, IClickForInfo
     public Sprite Sprite { get => gameObject.GetComponent<Sprite>(); }
     public Vector2 TargetPos { get => Target.transform.position; }
     public string Name { get => gameObject.name; }
-    public List<string> GetListString
+    public Dictionary<GameObject, SpriteDate> HaveList
     {
         get
         {
-            return _charactersList.ConvertAll(x => { Debug.Log("aaa"); return gameObject.name; });
+            var SpriteList = _charactersList.ConvertAll(x => GetComponent<Sprite>());
+            return _charactersList.ToDictionary(chara => chara.gameObject, 
+                date=>new SpriteDate(date.GetComponent<Sprite>(),date.name));
         }
     }
 

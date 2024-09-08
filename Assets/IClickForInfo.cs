@@ -2,15 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IClickForInfo : IAllInfo
+public interface IClickForInfo : IAllObjectInfo
+{
+    Vector2 TargetPos { get;}
+    Dictionary<GameObject,SpriteDate> HaveList { get; }
+    
+}
+public class SpriteDate
+{
+    public Sprite Sprite;
+    public string Name;
+    public SpriteDate(Sprite sprite,string name)
+    {
+        Sprite = sprite;
+        Name = name;
+    }
+}
+public interface IAllObjectInfo
 {
     Vector2 Pos { get;}
-    Vector2 TargetPos { get;}
-    List<string> GetListString {  get; }
-
-}
-public interface IAllInfo
-{
     Sprite Sprite { get;}
     string Name { get;}
 }

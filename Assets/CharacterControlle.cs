@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-public class CharacterControlle : MonoBehaviour
+public class CharacterControlle : MonoBehaviour, IClickForInfo
 {
     Action _interact;
     [SerializeField] GameObject _child;
@@ -35,12 +36,10 @@ public class CharacterControlle : MonoBehaviour
             _movePos = value;
             if (_movePos == (Vector2)_home.transform.position)
             {
-                Debug.Log("homeに移動中");
                 MoveState = CharacterMoveState.GoHorm;
             }
             else
             {
-                Debug.Log("ファーム中");
                 MoveState = CharacterMoveState.GoFarm;
             }
         }
@@ -50,8 +49,20 @@ public class CharacterControlle : MonoBehaviour
         get { return _farmObject; }
         set
         {
-            Debug.Log("setFarmObject");
             _farmObject = value;
+        }
+    }
+    //インターフェイス関連
+    public string Name { get => gameObject.name; }
+    public Sprite Sprite { get => gameObject.GetComponent<Sprite>(); }
+    public Vector2 Pos { get => transform.position; }
+    public Vector2 TargetPos { get => _movePos; }
+    public Dictionary<GameObject, SpriteDate> HaveList
+    {
+        get
+        {
+            return BackPack.ToDictionary(backPack => gameObject, 
+                backPack => new SpriteDate(ItemManager.Items[backPack], backPack.ToString()));
         }
     }
 
@@ -80,7 +91,6 @@ public class CharacterControlle : MonoBehaviour
                 {
                     MovePos = _home.transform.position;
                 }
-                Debug.Log("操作終了");
             }
         }
         else
